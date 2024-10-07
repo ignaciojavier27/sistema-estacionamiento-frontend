@@ -1,0 +1,18 @@
+:root {
+    --h2-font-family: "Roboto Condensed", sans-serif;
+    --p-font-family: sans-serif;
+    --h2-responsive: clamp(5vw, 2rem + 3vw, 9vw);
+    --p-font-size: clamp(0.9rem, 0.9vw + 1rem, 1.3rem);
+}
+
+h2 {
+    font-family: var(--h2-font-family);
+    font-size: var(--h2-responsive);
+    font-weight: bold;
+}
+  
+h3 {
+    font-family: var(--h2-font-family);
+    font-weight: bold;
+}
+  

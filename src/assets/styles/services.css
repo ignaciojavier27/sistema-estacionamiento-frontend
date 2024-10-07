@@ -1,0 +1,65 @@
+:root {
+  --h2-font-family: "Roboto Condensed", sans-serif;
+  --p-font-family: sans-serif;
+  --h2-responsive: clamp(5vw, 2rem + 3vw, 9vw);
+  --p-font-size: clamp(0.9rem, 0.9vw + 1rem, 1.3rem);
+}
+
+h2 {
+  font-family: var(--h2-font-family);
+  font-size: var(--h2-responsive);
+  font-weight: bold;
+}
+
+h3 {
+  font-family: var(--h2-font-family);
+  font-weight: bold;
+}
+
+.container-desarrollo {
+  position: relative;
+
+  & .line-curve {
+    position: absolute;
+    max-width: 70vw;
+    opacity: 0.2;
+    top: 0;
+    left: 0;
+  }
+
+  & ul.custom-list {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  & ul.custom-list li::before {
+    content: "★";
+    color: #f39c12;
+    font-size: 20px;
+    margin-right: 10px;
+  }
+}
+
+@media (min-width: 500px) {
+  .container-svg {
+    bottom: 15%;
+  }
+}
+
+@media (min-width: 950px) {
+  .container-svg {
+    bottom: 15%;
+  }
+}
+
+@media (min-width: 1100px) {
+  .container-svg {
+    bottom: 15%;
+  }
+}
+
+@media (min-width: 1250px) {
+  .container-svg {
+    bottom: 0;
+  }
+}
