@@ -3,8 +3,8 @@ import FormularioEstacionamiento from "../components/Owner/FormularioEstacionami
 const OwnerEstacionamientosScreen = () => {
   return (
     <main>
-      <section className="container-desarrollo container-md bg-white py-5">
-        <h2>Agrega un nuevo estacionamiento</h2>
+      <section className="container-desarrollo container-md bg-white d-flex align-items-center flex-column justify-content-center">
+        <h3 className="pt-5 pb-3">Agrega un nuevo estacionamiento</h3>
         <FormularioEstacionamiento/>
       </section>
     </main>

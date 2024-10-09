@@ -1,10 +1,13 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const FormularioEstacionamiento = () => {
   const [nombre, setNombre] = useState("");
-  const [direccion, setDireccion] = useState("");
+  const [nombreCalle, setNombreCalle] = useState("");
+  const [numero, setNumero] = useState("");
+  const [ciudad, setCiudad] = useState("");
+  const [region, setRegion] = useState("");
+  const [pais, setPais] = useState("");
   const [capacidadTotal, setCapacidadTotal] = useState("");
   const [precioPorMinuto, setPrecioPorMinuto] = useState("");
   const [horarioDisponible, setHorarioDisponible] = useState("");
@@ -14,7 +17,6 @@ const FormularioEstacionamiento = () => {
 
   useEffect(() => {
     const usuarioLogueado = JSON.parse(localStorage.getItem("usuario"));
-    console.log(usuarioLogueado);
     if (usuarioLogueado) {
       setPropietarioId(usuarioLogueado.usuario_id);
     }
@@ -23,9 +25,12 @@ const FormularioEstacionamiento = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Combinar los campos de dirección
+    const direccion = `${nombreCalle} ${numero}, ${ciudad}, ${region}, ${pais}`;
+
     const nuevoEstacionamiento = {
       nombre,
-      direccion,
+      direccion, // Usar la dirección combinada
       capacidad_total: capacidadTotal,
       precio_por_minuto: precioPorMinuto,
       horario_disponible: horarioDisponible,
@@ -46,7 +51,7 @@ const FormularioEstacionamiento = () => {
 
       if (response.ok) {
         alert("Estacionamiento creado exitosamente");
-        navigate("/dashboard");
+        navigate("/");
       } else {
         alert("Error al crear el estacionamiento");
       }
@@ -57,82 +62,140 @@ const FormularioEstacionamiento = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="mb-3">
-        <label htmlFor="estacionamiento-nombre-input" className="form-label">
-          Nombre:
-        </label>
-        <input
-          type="text"
-          name="nombre"
-          className="form-control"
-          id="estacionamiento-nombre-input"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          required
-        />
+    <section className="container-md">
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-8">
+          <form
+            onSubmit={handleSubmit}
+            className="container-md border border-2 border-ligth rounded-4 p-5 shadow-lg"
+          >
+            <div className="mb-3">
+              <label
+                htmlFor="estacionamiento-nombre-input"
+                className="form-label"
+              >
+                Nombre:
+              </label>
+              <input
+                type="text"
+                name="nombre"
+                className="form-control"
+                id="estacionamiento-nombre-input"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="nombre-calle-input" className="form-label">
+                Dirección:
+              </label>
+              <div className="container-input-direccion d-flex flex-column gap-2 flex-md-row">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Calle"
+                  id="nombre-calle-input"
+                  value={nombreCalle}
+                  onChange={(e) => setNombreCalle(e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Numero"
+                  id="numero-input"
+                  value={numero}
+                  onChange={(e) => setNumero(e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  className="form-control"
+                  id="ciudad-input"
+                  placeholder="Ciudad"
+                  value={ciudad}
+                  onChange={(e) => setCiudad(e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Region"
+                  id="region-input"
+                  value={region}
+                  onChange={(e) => setRegion(e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Pais"
+                  id="pais-input"
+                  value={pais}
+                  onChange={(e) => setPais(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+            <div className="mb-3">
+              <label
+                htmlFor="estacionamiento-capacidad-input"
+                className="form-label"
+              >
+                Capacidad Total:
+              </label>
+              <input
+                type="number"
+                name="capacidad"
+                className="form-control"
+                id="estacionamiento-capacidad-input"
+                value={capacidadTotal}
+                onChange={(e) => setCapacidadTotal(e.target.value)}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label
+                htmlFor="estacionamiento-precio-input"
+                className="form-label"
+              >
+                Precio por Minuto:
+              </label>
+              <input
+                type="number"
+                name="precio"
+                className="form-control"
+                id="estacionamiento-precio-input"
+                value={precioPorMinuto}
+                onChange={(e) => setPrecioPorMinuto(e.target.value)}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label
+                htmlFor="estacionamiento-horario-input"
+                className="form-label"
+              >
+                Horario Disponible:
+              </label>
+              <input
+                type="text"
+                name="horario"
+                className="form-control"
+                id="estacionamiento-horario-input"
+                value={horarioDisponible}
+                onChange={(e) => setHorarioDisponible(e.target.value)}
+                required
+              />
+            </div>
+            <button className="btn btn-dark" type="submit">
+              Agregar Estacionamiento
+            </button>
+          </form>
+        </div>
       </div>
-      <div className="mb-3">
-        <label htmlFor="estacionamiento-direccion-input" className="form-label">
-          Dirección:
-        </label>
-        <input
-          type="text"
-          name="dirección"
-          className="form-control"
-          id="estacionamiento-direccion-input"
-          value={direccion}
-          onChange={(e) => setDireccion(e.target.value)}
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="estacionamiento-capacidad-input" className="form-label">
-          Capacidad Total:
-        </label>
-        <input
-          type="number"
-          name="capacidad"
-          className="form-control"
-          id="estacionamiento-capacidad-input"
-          value={capacidadTotal}
-          onChange={(e) => setCapacidadTotal(e.target.value)}
-          required
-        />
-      </div>
-
-      <div className="mb-3">
-        <label htmlFor="estacionamiento-precio-input" className="form-label">
-          Precio por Minuto:
-        </label>
-        <input
-          type="number"
-          name="precio"
-          className="form-control"
-          id="estacionamiento-precio-input"
-          value={precioPorMinuto}
-          onChange={(e) => setPrecioPorMinuto(e.target.value)}
-          required
-        />
-      </div>      
-
-      <div className="mb-3">
-        <label htmlFor="estacionamiento-horario-input" className="form-label">
-          Horario Disponible:
-        </label>
-        <input
-          type="text"
-          name="horario"
-          className="form-control"
-          id="estacionamiento-horario-input"
-          value={horarioDisponible}
-          onChange={(e) => setHorarioDisponible(e.target.value)}
-          required
-        />
-      </div>
-
-      <button className="btn btn-primary" type="submit">Agregar Estacionamiento</button>
-    </form>
+    </section>
   );
 };
 

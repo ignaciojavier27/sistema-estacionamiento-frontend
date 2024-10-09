@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../assets/styles/owners.css";
 
 const OwnersScreen = () => {
@@ -74,7 +75,9 @@ const OwnersScreen = () => {
             Únete a nuestra plataforma y empieza a gestionar tus
             estacionamientos de manera más eficiente. Es rápido, fácil y seguro.
           </p>
-          <button className="btn btn-dark border border-2 mt-4">Registrarse</button>
+          <button className="btn btn-dark border border-2 mt-4">
+            <Link to="/signup" className="text-white text-decoration-none fw-bold">Registrate</Link>
+          </button>
         </div>
       </section>
     </main>
