@@ -30,7 +30,7 @@ const Login = ({ setUserType }) => {
         if (data.usuario.tipo_usuario === "cliente") {
           navigate("/");
         } else if (data.usuario.tipo_usuario === "propietario") {
-          navigate("/dashboard");
+          navigate("/owners/dashboard");
         }
       } else {
         setError(data.error);

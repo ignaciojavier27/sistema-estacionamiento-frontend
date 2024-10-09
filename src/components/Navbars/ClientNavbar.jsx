@@ -18,7 +18,10 @@ const ClientNavbar = () => {
     return (
     <div className="container-fluid p-0 m-0">
         <nav className="navbar navbar-expand-lg navbar-light bg-body-tertiary">
-            <div className="container-fluid mx-3">
+            <div className="container-fluid px-5">
+                <NavLink className="navbar-brand" to={'/'}>
+                    <img src="/images/icono-estacionamiento.png" alt="Logo" width="30" height="24" className="d-inline-block align-text-top"/>
+                </NavLink>
                 <button 
                     className="navbar-toggler" 
                     type="button" 
@@ -37,7 +40,7 @@ const ClientNavbar = () => {
                         </li>
                         <div className="dropdown">
                             <button className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {userName}
+                                {userName} <img src="/images/icono-usuario.png" alt="Icono usuario estandar" width={"24"} height={"24"} className="d-inline-block align-text-top"/>
                             </button>
                             <ul className="dropdown-menu">
                                 <li>

@@ -4,7 +4,10 @@ const Navbar = () => {
     return (
     <div className="container-fluid p-0 m-0">
         <nav className="navbar navbar-expand-lg navbar-light bg-body-tertiary ">
-            <div className="container-fluid">
+            <div className="container-fluid px-5">
+                <NavLink className="navbar-brand" to={'/'}>
+                    <img src="/images/icono-estacionamiento.png" alt="Logo" width="30" height="24" className="d-inline-block align-text-top"/>
+                </NavLink>
                 <button 
                     className="navbar-toggler" 
                     type="button" 

@@ -9,8 +9,9 @@ import LogoutScreen from './views/LogoutScreen';
 import ClientNavbar from './components/Navbars/ClientNavbar';
 import OwnerNavbar from './components/Navbars/OwnerNavbar';
 import Navbar from './components/Navbar';
-import OwnerEstacionamientosScreen from './views/OwnerEstacionamientosScreen';
-import HistoryClientScreen from './views/HistoryClientScreen';
+import OwnerEstacionamientosScreen from './views/owner/OwnerEstacionamientosScreen';
+import HistoryClientScreen from './views/client/HistoryClientScreen';
+import OwnerDashboard from './views/Owner/OwnerDashboard';
 function App() {
 
   const [userType, setUserType] = useState("");
@@ -39,6 +40,7 @@ function App() {
 
         <Route path='/client/history' element={<HistoryClientScreen />} />
 
+        <Route path='/owners/dashboard' element={<OwnerDashboard />}/>
         <Route path='/owners' element={<OwnersScreen />} />
         <Route path='/owners/parking' element={<OwnerEstacionamientosScreen />} />
 

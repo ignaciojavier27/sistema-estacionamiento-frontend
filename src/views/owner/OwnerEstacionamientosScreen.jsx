@@ -1,4 +1,4 @@
-import FormularioEstacionamiento from "../components/Owner/FormularioEstacionamiento";
+import FormularioEstacionamiento from "../../components/Owner/FormularioEstacionamiento";
 
 const OwnerEstacionamientosScreen = () => {
   return (
