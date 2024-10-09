@@ -5,7 +5,7 @@ const ServicesScreen = () => {
     <main>
         <section className="container-services container-full bg-white  py-5">
             <article className="container-md">
-                <img src='/public/images/line-curve.svg' alt="line-curve" className="line-curve" />
+                <img src='/images/line-curve.svg' alt="line-curve" className="line-curve" />
                 <h2>Reserva tu estacionamiento desde cualquier parte del mundo</h2>
                 <p>Nos especializamos en desarrollar soluciones tecnológicas avanzadas para la gestión de estacionamientos en tiempo real. Nuestro sistema se destaca por su escalabilidad, seguridad y una interfaz intuitiva que facilita la experiencia de usuarios y propietarios de estacionamientos. Ofrecemos herramientas personalizadas para optimizar la gestión y maximizar los ingresos.</p>
                 <h3 className="pt-3">¿Qué ofrecemos?</h3>

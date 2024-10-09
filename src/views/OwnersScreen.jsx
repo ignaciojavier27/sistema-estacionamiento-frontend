@@ -7,7 +7,7 @@ const OwnersScreen = () => {
         <article className="container-md">
           <div className="container-svg">
             <img
-              src="/public/images/line-curve.svg"
+              src="/images/line-curve.svg"
               alt="line-curve"
               className="line-curve"
             />
