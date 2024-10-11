@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const OwnerDashboard = () => {
   const [estacionamientos, setEstacionamientos] = useState([]);
@@ -91,6 +92,9 @@ const OwnerDashboard = () => {
           </h3>
         )}
       </section>
+      <button className="btn btn-dark btn-lg mt-5">
+        <NavLink to="/owners/parking" className={"nav-link"}>Añadir estacionamiento</NavLink>
+      </button>
     </main>
   );
 };
