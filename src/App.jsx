@@ -11,7 +11,7 @@ import OwnerNavbar from './components/Navbars/OwnerNavbar';
 import Navbar from './components/Navbar';
 import OwnerEstacionamientosScreen from './views/owner/OwnerEstacionamientosScreen';
 import HistoryClientScreen from './views/client/HistoryClientScreen';
-import OwnerDashboard from './views/Owner/OwnerDashboard';
+import OwnerDashboard from './views/owner/OwnerDashboard';
 function App() {
 
   const [userType, setUserType] = useState("");
