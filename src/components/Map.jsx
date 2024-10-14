@@ -4,10 +4,31 @@ import { obtenerCoordenadas } from '../helpers/obtenerCoordenadas';
 import MarcadorEstacionamiento from './MarcadorEstacionamiento';
 
 const Map = () => {
-  const defaultMapPosition = [-34.9854011, -71.2397409];
-
+  const [userPosition, setUserPosition] = useState(null);
   const [estacionamientos, setEstacionamientos] = useState([]);
-  const [loading, setLoading] = useState(true); // Nuevo estado de carga
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const obtenerUbicacionUsuario = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setUserPosition([latitude, longitude]);
+          },
+          (error) => {
+            console.error('Error al obtener la ubicación del usuario:', error);
+            setUserPosition([-34.9854011, -71.2397409]); 
+          }
+        );
+      } else {
+        console.error('Geolocalización no es compatible con este navegador');
+        setUserPosition([-34.9854011, -71.2397409]);
+      }
+    };
+
+    obtenerUbicacionUsuario();
+  }, []);
 
   useEffect(() => {
     const fetchEstacionamientos = async () => {
@@ -23,10 +44,10 @@ const Map = () => {
         );
 
         setEstacionamientos(estacionamientosConCoordenadas);
-        setLoading(false); // Los estacionamientos ya están cargados
+        setLoading(false);
       } catch (error) {
         console.error('Error al cargar los estacionamientos:', error);
-        setLoading(false); // Asegúrate de ocultar el estado de carga en caso de error
+        setLoading(false);
       }
     };
 
@@ -35,21 +56,21 @@ const Map = () => {
 
   return (
     <section className='container-fluid m-0 p-0'>
-      {loading ? (
+      {loading || !userPosition ? (
         <section className="section-loader d-flex justify-content-center align-items-center">
           <div className="loader"></div>
         </section>
       ) : (
-        <MapContainer center={defaultMapPosition} zoom={15} style={{ height: '90vh', width: '100%' }}>
+        <MapContainer center={userPosition} zoom={15} style={{ height: '90vh', width: '100%' }}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
-          {estacionamientos.map((estacionamiento) => (          
+          {estacionamientos.map((estacionamiento) =>
             estacionamiento.coordenadas && (
-              <MarcadorEstacionamiento key={estacionamiento.estacionamiento_id * 1.1} estacionamiento={estacionamiento}/>
+              <MarcadorEstacionamiento key={estacionamiento.estacionamiento_id} estacionamiento={estacionamiento} />
             )
-          ))}
+          )}
         </MapContainer>
       )}
     </section>
