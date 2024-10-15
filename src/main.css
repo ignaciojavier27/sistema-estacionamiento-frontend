@@ -41,6 +41,26 @@ background-image: radial-gradient(circle closest-side, #fff 94%, #000);
 background-clip: text;
 }
 
+.section-input-location{
+  position: absolute;
+  top: 10px;
+  left: 3%;
+  z-index: 1000;
+  background: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+  & input{
+    border: none;
+    outline: none;
+  }
+  & button{
+    border: none;
+    outline: none;
+    background: none;
+  }
+}
+
 @keyframes l24 {
   100% {
     background-position: left;
