@@ -30,11 +30,11 @@ const FormularioEstacionamiento = () => {
 
     const nuevoEstacionamiento = {
       nombre,
-      direccion, // Usar la dirección combinada
-      capacidad_total: capacidadTotal,
+      direccion,
       precio_por_minuto: precioPorMinuto,
       horario_disponible: horarioDisponible,
       propietario_id: propietarioId,
+      capacidad: capacidadTotal
     };
 
     try {

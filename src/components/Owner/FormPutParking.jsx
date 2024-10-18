@@ -26,7 +26,7 @@ const FormPutParking = () => {
         const estacionamiento = await response.json();
         
         setNombre(estacionamiento.nombre);
-        setCapacidadTotal(estacionamiento.capacidad_total);
+        setCapacidadTotal(estacionamiento.capacidad);
         setPrecioPorMinuto(estacionamiento.precio_por_minuto);
         setHorarioDisponible(estacionamiento.horario_disponible);
         setPropietarioId(estacionamiento.propietario_id);
@@ -46,10 +46,10 @@ const FormPutParking = () => {
     const estacionamientoActualizado = {
       nombre,
       direccion,
-      capacidad_total: capacidadTotal,
       precio_por_minuto: precioPorMinuto,
       horario_disponible: horarioDisponible,
       propietario_id: propietarioId,
+      capacidad: capacidadTotal
     };
 
     try {
