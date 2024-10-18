@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const OwnerDashboard = () => {
   const [estacionamientos, setEstacionamientos] = useState([]);
-  const [loading, setLoading] = useState(true); // Estado de carga
-  const [error, setError] = useState(null); // Estado de error
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); 
+
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchEstacionamientos = async () => {
@@ -23,27 +25,31 @@ const OwnerDashboard = () => {
 
           const data = await response.json();
           setEstacionamientos(data);
-          setLoading(false); // Se completa la carga
+          setLoading(false);
         }
       } catch (error) {
-        setError(error.message); // Se guarda el error
-        setLoading(false); // Se detiene el loader
+        setError(error.message);
+        setLoading(false);
       }
     };
 
     fetchEstacionamientos();
   }, []);
 
+  const handleEditClick = (estacionamientoId) => {
+    navigate(`/owners/edit-parking/${estacionamientoId}`);
+  };
+
   if (loading) {
     return (
       <section className="section-loader d-flex justify-content-center align-items-center">
-        <div className="loader-owner-estacionamiento"></div> {/* Loader visual */}
+        <div className="loader-owner-estacionamiento"></div>
       </section>
     );
   }
 
   if (error) {
-    return <p className="text-danger text-center mt-5">Error: {error}</p>; // Mensaje de error
+    return <p className="text-danger text-center mt-5">Error: {error}</p>;
   }
 
   return (
@@ -64,11 +70,7 @@ const OwnerDashboard = () => {
                 <div>
                   <button
                     className="btn btn-danger btn-sm me-2"
-                    onClick={() =>
-                      console.log(
-                        `Editar estacionamiento ${estacionamiento.estacionamiento_id}`
-                      )
-                    }
+                    onClick={() => handleEditClick(estacionamiento.estacionamiento_id)}
                   >
                     Editar
                   </button>
