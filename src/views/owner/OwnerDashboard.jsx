@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import BotonesGestionEstacionamiento from "../../components/Owner/BotonesGestionEstacionamiento";
 
 const OwnerDashboard = () => {
   const [estacionamientos, setEstacionamientos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); 
 
-  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchEstacionamientos = async () => {
@@ -15,13 +15,11 @@ const OwnerDashboard = () => {
         if (usuarioLogueado) {
           const propietarioId = usuarioLogueado.usuario_id;
 
+          console.log(propietarioId)
+
           const response = await fetch(
             `https://sistema-estacionamiento-backend-production.up.railway.app/api/estacionamientos/propietario/${propietarioId}`
           );
-
-          if (!response.ok) {
-            throw new Error("Error al obtener los estacionamientos");
-          }
 
           const data = await response.json();
           setEstacionamientos(data);
@@ -36,9 +34,6 @@ const OwnerDashboard = () => {
     fetchEstacionamientos();
   }, []);
 
-  const handleEditClick = (estacionamientoId) => {
-    navigate(`/owners/edit-parking/${estacionamientoId}`);
-  };
 
   if (loading) {
     return (
@@ -53,50 +48,38 @@ const OwnerDashboard = () => {
   }
 
   return (
-    <main className="container-md">
-      <section className="mt-5 p-3 border rounded-3 shadow">
+    <main className="container-md d-flex flex-column justify-content-center flex-xl-row">
+      <section className="mt-5 p-5 border rounded-3 shadow container-estacionamientos">
         <h3>Tus estacionamientos</h3>
         {estacionamientos.length > 0 ? (
-          <div className="list-group d-flex gap-2">
-            {estacionamientos.map((estacionamiento) => (
-              <div
-                key={estacionamiento.estacionamiento_id * 1.3}
-                className="list-group-item border list-group-item-action d-flex flex-column flex-sm-row justify-content-between align-items-center"
-              >
-                <div>
-                  <h5>{estacionamiento.nombre}</h5>
-                  <p>{estacionamiento.direccion}</p>
+            <article className="list-group d-flex gap-2">
+              {estacionamientos.map((estacionamiento) => (
+                <div
+                  key={estacionamiento.estacionamiento_id * 1.3}
+                  className="list-group-item border list-group-item-action d-flex flex-column flex-sm-row justify-content-between align-items-center"
+                >
+                  <div>
+                    <h5>{estacionamiento.nombre}</h5>
+                    <p>{estacionamiento.direccion}</p>
+                  </div>
+                  <BotonesGestionEstacionamiento estacionamiento={estacionamiento.estacionamiento_id}/>
                 </div>
-                <div>
-                  <button
-                    className="btn btn-danger btn-sm me-2"
-                    onClick={() => handleEditClick(estacionamiento.estacionamiento_id)}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="btn btn-dark btn-sm"
-                    onClick={() =>
-                      console.log(
-                        `Ver detalles de estacionamiento ${estacionamiento.estacionamiento_id}`
-                      )
-                    }
-                  >
-                    Ver detalles
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </article>
         ) : (
           <h3 className="text-center">
             No tienes estacionamientos registrados.
           </h3>
         )}
+        <button className="btn btn-dark btn-lg mt-3">
+          <NavLink to="/owners/parking" className={"nav-link"}>Añadir estacionamiento</NavLink>
+        </button>
       </section>
-      <button className="btn btn-dark btn-lg mt-5">
-        <NavLink to="/owners/parking" className={"nav-link"}>Añadir estacionamiento</NavLink>
-      </button>
+
+      <section className="mt-5 p-5 border rounded-3 shadow ms-xl-3 container-estacionamientos-indicadores">
+        <h3>Tus ingresos</h3>
+      </section>
+
     </main>
   );
 };

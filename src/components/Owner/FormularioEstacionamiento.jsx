@@ -25,7 +25,6 @@ const FormularioEstacionamiento = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Combinar los campos de dirección
     const direccion = `${nombreCalle} ${numero}, ${ciudad}, ${region}, ${pais}`;
 
     const nuevoEstacionamiento = {

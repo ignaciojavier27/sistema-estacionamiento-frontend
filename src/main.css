@@ -61,8 +61,41 @@ background-clip: text;
   }
 }
 
+.container-estacionamientos{
+  width: 100%;
+}
+
+.container-estacionamientos-indicadores{
+  width: 100%;
+}
+
 @keyframes l24 {
   100% {
     background-position: left;
+  }
+}
+
+
+@media (min-width: 576px) {
+  
+}
+
+/* Dispositivos grandes (>= 768px) */
+@media (min-width: 768px) {
+ 
+}
+
+/* Dispositivos extra grandes (>= 992px) */
+@media (min-width: 992px) {
+
+}
+
+/* Dispositivos muy grandes (>= 1200px) */
+@media (min-width: 1200px) {
+  .container-estacionamientos{
+    max-width: 55%;
+  }
+  .container-estacionamientos-indicadores{
+    max-width: 40%;
   }
 }
