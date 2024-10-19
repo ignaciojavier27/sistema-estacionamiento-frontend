@@ -9,7 +9,7 @@ const FormularioEstacionamiento = () => {
   const [region, setRegion] = useState("");
   const [pais, setPais] = useState("");
   const [capacidadTotal, setCapacidadTotal] = useState("");
-  const [precioPorMinuto, setPrecioPorMinuto] = useState("");
+  const [precioPorMinuto, setPrecioPorMinuto] = useState();
   const [horarioDisponible, setHorarioDisponible] = useState("");
   const [propietarioId, setPropietarioId] = useState(null);
 
@@ -30,7 +30,7 @@ const FormularioEstacionamiento = () => {
     const nuevoEstacionamiento = {
       nombre,
       direccion,
-      precio_por_minuto: precioPorMinuto,
+      precio_por_minuto: parseInt(precioPorMinuto),
       horario_disponible: horarioDisponible,
       propietario_id: propietarioId,
       capacidad: capacidadTotal
