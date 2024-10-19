@@ -34,7 +34,6 @@ const OwnerDashboard = () => {
     fetchEstacionamientos();
   }, []);
 
-
   if (loading) {
     return (
       <section className="section-loader d-flex justify-content-center align-items-center">
@@ -62,7 +61,9 @@ const OwnerDashboard = () => {
                     <h5>{estacionamiento.nombre}</h5>
                     <p>{estacionamiento.direccion}</p>
                   </div>
-                  <BotonesGestionEstacionamiento estacionamiento={estacionamiento.estacionamiento_id}/>
+                  <BotonesGestionEstacionamiento 
+                    estacionamiento={estacionamiento.estacionamiento_id}
+                  />
                 </div>
               ))}
             </article>
