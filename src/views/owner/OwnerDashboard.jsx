@@ -46,7 +46,7 @@ const OwnerDashboard = () => {
   return (
     <main className="container-md d-flex flex-column justify-content-center flex-xl-row">
       <section className="mt-5 p-5 border rounded-3 shadow container-estacionamientos">
-        <h3>Tus estacionamientos</h3>
+        <h3 className="text-center mb-4">Tus estacionamientos</h3>
         {estacionamientos.length > 0 ? (
             <article className="list-group d-flex gap-2">
               {estacionamientos.map((estacionamiento) => (
@@ -75,7 +75,7 @@ const OwnerDashboard = () => {
       </section>
 
       <section className="mt-5 p-5 border rounded-3 shadow ms-xl-3 container-estacionamientos-indicadores">
-        <h3>Tus ingresos</h3>
+        <h3 className="text-center mb-4">Tus ingresos</h3>
       </section>
 
     </main>
