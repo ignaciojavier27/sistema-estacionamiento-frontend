@@ -69,6 +69,28 @@ background-clip: text;
   width: 100%;
 }
 
+.item-estacionamiento{
+  font-weight: bolder;
+  border: 3px solid black;
+  border-radius: 8px;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: opacity .2s ease;
+}
+
+.item-estacionamiento:hover{
+  opacity: .90;
+}
+
+.estacionamiento-ocupado{
+  background-color: rgb(0, 102, 68); 
+}
+
+.estacionamiento-desocupado{
+  background-color: rgb(120, 0, 0);  
+}
+
 @keyframes l24 {
   100% {
     background-position: left;

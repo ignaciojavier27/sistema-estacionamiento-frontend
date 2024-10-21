@@ -13,6 +13,7 @@ import OwnerEstacionamientosScreen from './views/owner/OwnerEstacionamientosScre
 import HistoryClientScreen from './views/client/HistoryClientScreen';
 import OwnerDashboard from './views/owner/OwnerDashboard';
 import OwnerEditParkingScreen from './views/owner/OwnerEditParkingScreen';
+import OwnerManageParkingScreen from './views/owner/OwnerManageParkingScreen';
 function App() {
 
   const [userType, setUserType] = useState("");
@@ -45,6 +46,7 @@ function App() {
         <Route path='/owners' element={<OwnersScreen />} />
         <Route path='/owners/parking' element={<OwnerEstacionamientosScreen />} />
         <Route path='/owners/edit-parking/:id' element={<OwnerEditParkingScreen />}/>
+        <Route path='/owners/manage-parking/:id' element={<OwnerManageParkingScreen />}/>
 
         <Route path='/signup' element={<RegisterScreen />} />
         <Route path='/login' element={<LoginScreen setUserType={setUserType} />} />

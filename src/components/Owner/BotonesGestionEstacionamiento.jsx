@@ -14,6 +14,10 @@ const BotonesGestionEstacionamiento = ({ estacionamiento }) => {
     setShowModal(true);
   };
 
+  const handleManageClick = () => {
+    navigate(`/owners/manage-parking/${estacionamiento}`);
+  }
+
   const handleConfirmDelete = async () => {
     try {
       const response = await fetch(
@@ -36,6 +40,12 @@ const BotonesGestionEstacionamiento = ({ estacionamiento }) => {
 
   return (
     <div>
+      <button
+        className="btn btn-dark btn-sm me-2"
+        onClick={() => handleManageClick(estacionamiento)}
+      >
+        Gestionar
+      </button>
       <button
         className="btn btn-dark btn-sm me-2"
         onClick={() => handleEditClick(estacionamiento)}

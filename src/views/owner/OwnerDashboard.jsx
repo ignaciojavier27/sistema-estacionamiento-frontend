@@ -14,9 +14,6 @@ const OwnerDashboard = () => {
         const usuarioLogueado = JSON.parse(localStorage.getItem("usuario"));
         if (usuarioLogueado) {
           const propietarioId = usuarioLogueado.usuario_id;
-
-          console.log(propietarioId)
-
           const response = await fetch(
             `https://sistema-estacionamiento-backend-production.up.railway.app/api/estacionamientos/propietario/${propietarioId}`
           );
