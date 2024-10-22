@@ -11,22 +11,18 @@ const OwnerManageParkingScreen = () => {
   const [error, setError] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [loadingRegistro, setLoadingRegistro] = useState(false);
-  const [esSalida, setEsSalida] = useState(false); // Para distinguir entre ingreso y salida
+  const [esSalida, setEsSalida] = useState(false);
 
   useEffect(() => {
     const fetchEspacios = async () => {
       try {
         const response = await fetch(`https://sistema-estacionamiento-backend-production.up.railway.app/api/espacios/estacionamiento/${id}`);
-
-        if (!response.ok) {
-          throw new Error('Error al obtener los espacios');
-        }
-
+        if (!response.ok) throw new Error('Error al obtener los espacios');
         const data = await response.json();
         setEspacios(data);
-        setLoading(false);
       } catch (error) {
-        setError('Error al obtener los espacios', error);
+        setError(error.message);
+      } finally {
         setLoading(false);
       }
     };
@@ -34,72 +30,49 @@ const OwnerManageParkingScreen = () => {
     fetchEspacios();
   }, [id]);
 
-  useEffect(() => {
-    console.log(espacios)
-  },[espacios])
-
   const handleEspacioClick = (espacio) => {
     setSelectedEspacio(espacio);
-    if (espacio.estado === 0) {
-      setEsSalida(false); 
-      setModalVisible(true);
-    } else {
-      setEsSalida(true); 
-      setModalVisible(true);
-    }
+    setEsSalida(espacio.estado === 1); // Si el espacio está ocupado, es una salida
+    setModalVisible(true);
   };
 
   const handleRegistroVehiculo = async () => {
-
     if (!patente && !esSalida) {
       alert('Debe ingresar la patente del vehículo');
       return;
     }
-
+  
     setLoadingRegistro(true);
     try {
       if (!esSalida) {
-        try {
-          const response = await fetch(`https://sistema-estacionamiento-backend-production.up.railway.app/api/ingresoVehiculo`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              patente: patente,
-              espacio_id: selectedEspacio.espacio_id,
-            }),
-          });
-      
-          if (!response.ok) {
-            throw new Error('Error al registrar el ingreso');
-          }
-      
-          const data = await response.json();
+        const response = await fetch(`https://sistema-estacionamiento-backend-production.up.railway.app/api/ingresoVehiculo`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            patente: patente,
+            espacio_id: selectedEspacio.espacio_id,
+          }),
+        });
+  
+        if (!response.ok) throw new Error('Error al registrar el ingreso');
+        const data = await response.json();
+  
+        if (data.ingreso.ingreso_id) {
+          alert('Vehículo ingresado correctamente');
 
-          console.log(data);
-          
-          if (data.ingreso.ingreso_id) {
-            alert('Vehículo ingresado correctamente');
-            
-            const updatedEspacio = { ...selectedEspacio, ingreso_id:data.ingreso.ingreso_id, patente: data.ingreso.patente};
-      
-            const updatedEspacios = espacios.map((espacio) =>
-              espacio.espacio_id === selectedEspacio.espacio_id ? { ...updatedEspacio, estado: 1 } : espacio
-            );
-            setEspacios(updatedEspacios);
-          } else {
-            throw new Error('No se recibió ingreso_id del servidor');
-          }
-      
+          // Actualiza solo el espacio seleccionado
+          const updatedEspacios = espacios.map((espacio) =>
+            espacio.espacio_id === selectedEspacio.espacio_id
+              ? { ...espacio, ingreso_id: data.ingreso.ingreso_id, patente: data.ingreso.patente, estado: 1 }
+              : espacio
+          );
+          setEspacios(updatedEspacios);
           setModalVisible(false);
           setPatente('');
-          
-        } catch (error) {
-          console.error(error);
-          alert('Error al registrar el ingreso del vehículo');
+        } else {
+          throw new Error('No se recibió ingreso_id del servidor');
         }
       } else {
-
-        // Registro de salida de vehículo
         const response = await fetch(`https://sistema-estacionamiento-backend-production.up.railway.app/api/salidaVehiculo`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -107,23 +80,19 @@ const OwnerManageParkingScreen = () => {
             ingreso_id: selectedEspacio.ingreso_id,
           }),
         });
-
-        if (!response.ok) {
-          throw new Error('Error al registrar la salida');
-        }
-
+  
+        if (!response.ok) throw new Error('Error al registrar la salida');
         const result = await response.json();
         alert(`Vehículo salió correctamente. Total a pagar: $${result.salida.total_a_pagar}`);
-
         const updatedEspacios = espacios.map((espacio) =>
-          espacio.espacio_id === selectedEspacio.espacio_id ? { ...espacio, estado: 0 } : espacio
+          espacio.espacio_id === selectedEspacio.espacio_id ? { ...espacio, estado: 0, ingreso_id: null, patente: null } : espacio
         );
         setEspacios(updatedEspacios);
         setModalVisible(false);
       }
     } catch (error) {
       console.error(error);
-      alert(`Error al registrar el ${esSalida ? 'salida' : 'ingreso'} del vehículo`);
+      alert(`Error al registrar el ${esSalida ? 'salida' : 'ingreso'} del vehículo: ${error.message}`);
     } finally {
       setLoadingRegistro(false);
     }
@@ -152,7 +121,11 @@ const OwnerManageParkingScreen = () => {
                       className={`item-estacionamiento ${espacio.estado === 0 ? 'estacionamiento-ocupado' : 'estacionamiento-desocupado'}`}
                       onClick={() => handleEspacioClick(espacio)}
                     >
-                      {espacio.estado === 0 ? 'Disponible' : 'Ocupado'}
+                      {
+                        espacio.estado === 0 
+                          ? 'Disponible' 
+                          : espacio.patente
+                      }
                     </span>
                   </div>
                 ))}
@@ -164,7 +137,7 @@ const OwnerManageParkingScreen = () => {
         )}
       </section>
 
-      <DetailsParking /> 
+      <DetailsParking />
 
       {modalVisible && (
         <div className="modal show d-block" tabIndex="-1">
