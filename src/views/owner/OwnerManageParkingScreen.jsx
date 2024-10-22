@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import DetailsParking from '../../components/Owner/DetailsParking';
 
 const OwnerManageParkingScreen = () => {
   const { id } = useParams();
@@ -32,6 +33,10 @@ const OwnerManageParkingScreen = () => {
 
     fetchEspacios();
   }, [id]);
+
+  useEffect(() => {
+    console.log(espacios)
+  },[espacios])
 
   const handleEspacioClick = (espacio) => {
     setSelectedEspacio(espacio);
@@ -69,11 +74,13 @@ const OwnerManageParkingScreen = () => {
           }
       
           const data = await response.json();
+
+          console.log(data);
           
           if (data.ingreso.ingreso_id) {
             alert('Vehículo ingresado correctamente');
             
-            const updatedEspacio = { ...selectedEspacio, ingreso_id:data.ingreso.ingreso_id };
+            const updatedEspacio = { ...selectedEspacio, ingreso_id:data.ingreso.ingreso_id, patente: data.ingreso.patente};
       
             const updatedEspacios = espacios.map((espacio) =>
               espacio.espacio_id === selectedEspacio.espacio_id ? { ...updatedEspacio, estado: 1 } : espacio
@@ -131,11 +138,11 @@ const OwnerManageParkingScreen = () => {
   }
 
   return (
-    <main className="container-md d-flex flex-column justify-content-center flex-xl-row">
+    <main className="container-fluid d-flex flex-column justify-content-center flex-xl-row">
       <section className="mt-5 p-5 border rounded-3 shadow container-estacionamientos">
         <h3 className="text-center mb-4">Mapa de ocupación</h3>
         {espacios.length > 0 ? (
-          <div className="d-flex flex-wrap justify-content-evenly">
+          <div className="d-flex flex-row flex-wrap justify-content-center">
             {groupedEspacios.map((grupo, index) => (
               <div key={index} className="me-4 mb-4">
                 {grupo.map((espacio) => (
@@ -157,9 +164,7 @@ const OwnerManageParkingScreen = () => {
         )}
       </section>
 
-      <section className='mt-5 ms-3 p-5 border rounded-3 shadow'>
-        <h3>Datos del estacionamiento</h3>
-      </section>
+      <DetailsParking /> 
 
       {modalVisible && (
         <div className="modal show d-block" tabIndex="-1">
