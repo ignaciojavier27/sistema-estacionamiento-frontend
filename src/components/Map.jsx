@@ -1,9 +1,17 @@
 import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
 import { obtenerCoordenadas } from '../helpers/obtenerCoordenadas';
 import { obtenerUbicacionUsuario } from '../helpers/obtenerUbicacionUsuario';
 import MarcadorEstacionamiento from './MarcadorEstacionamiento';
 import InputLocation from './MapComponents/InputLocation';
+
+const userIcon = new L.Icon({
+  iconUrl: '/images/icono-auto.png',
+  iconSize: [45, 45],
+  iconAnchor: [25, 45],
+  popupAnchor: [0, -40],
+});
 
 const Map = () => {
 
@@ -55,6 +63,13 @@ const Map = () => {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
+
+            <Marker position={userPosition} icon={userIcon}>
+              <Popup>
+                  <h3 className='fs-6'>Estás aquí</h3>
+              </Popup>
+            </Marker>
+
             {estacionamientos.map((estacionamiento) =>
               estacionamiento.coordenadas && (
                 <MarcadorEstacionamiento key={estacionamiento.estacionamiento_id} estacionamiento={estacionamiento} />
