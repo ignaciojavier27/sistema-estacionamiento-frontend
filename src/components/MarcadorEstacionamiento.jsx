@@ -42,8 +42,8 @@ const MarcadorEstacionamiento = ({ estacionamiento }) => {
                             <span className="fs-6"> {estacionamiento.direccion}</span>
                         </p>
                         <p>
-                            <span className="fw-bold fs-6">Horario:</span> 
-                            <span className="fs-6"> {estacionamiento.horario_disponible}</span>
+                            <span className="fw-bold fs-6">Precio Minuto:</span> 
+                            <span className="fs-6"> ${estacionamiento.precio_por_minuto}</span>
                         </p>
 
                         <button 

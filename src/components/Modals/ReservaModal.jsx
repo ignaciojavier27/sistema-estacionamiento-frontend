@@ -1,11 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ReservaModal = ({ show, onClose, estacionamiento }) => {
     const [fechaReserva, setFechaReserva] = useState('');
     const [horaInicio, setHoraInicio] = useState('');
-    const [horaFin, setHoraFin] = useState('');
+    const [patente, setPatente] = useState('');
+
+    useEffect(() => {
+        if (show) {
+            setHoraInicio(obtenerHoraActual());
+        }
+    }, [show]);
+
+    const obtenerFechaMinima = () => {
+        const today = new Date();
+        today.setDate(today.getDate() + 1);
+        return today.toISOString().split('T')[0];
+    };
+
+    const obtenerHoraActual = () => {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
+    };
 
     const handleReserva = (e) => {
         e.preventDefault();
@@ -14,7 +33,7 @@ const ReservaModal = ({ show, onClose, estacionamiento }) => {
             estacionamiento_id: estacionamiento.estacionamiento_id,
             fecha_reserva: fechaReserva,
             hora_inicio: horaInicio,
-            hora_fin: horaFin,
+            patente: patente,
         };
 
         console.log('Datos de la reserva:', reservaData);
@@ -43,6 +62,7 @@ const ReservaModal = ({ show, onClose, estacionamiento }) => {
                                     id="fechaReserva"
                                     value={fechaReserva}
                                     onChange={(e) => setFechaReserva(e.target.value)}
+                                    min={obtenerFechaMinima()}
                                     required
                                 />
                             </div>
@@ -63,8 +83,8 @@ const ReservaModal = ({ show, onClose, estacionamiento }) => {
                                     type="text"
                                     className="form-control"
                                     id="patente"
-                                    value={horaFin}
-                                    onChange={(e) => setHoraFin(e.target.value)}
+                                    value={patente}
+                                    onChange={(e) => setPatente(e.target.value)}
                                     required
                                 />
                             </div>
