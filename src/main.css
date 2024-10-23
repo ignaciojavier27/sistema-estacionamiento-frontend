@@ -96,6 +96,8 @@ background-clip: text;
   top: 20px;
   right: 20px;
   transition: transform .4s ease;
+  background-color: none;
+  border:none;
 }
 
 .icono-sincronizacion:hover{
