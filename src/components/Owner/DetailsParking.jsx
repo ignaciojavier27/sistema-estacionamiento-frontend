@@ -57,27 +57,15 @@ const DetailsParking = ({ estacionamientoId }) => {
     <section className="mt-5 ms-3 p-5 border rounded-3 shadow position-relative">
       <div className="d-flex justify-content-between">
         <h3 className="text-center">Datos del estacionamiento</h3>
-        {/* Botón de refrescar */}
-        <button
-          onClick={fetchSalidas}
-          className="btn btn-light"
-          style={{
-            position: 'absolute',
-            top: '10px',
-            right: '10px',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-          }}
-          title="Refrescar ingresos"
-        >
           <img
+            onClick={fetchSalidas}
+            className='icono-sincronizacion'
             src="/images/icono-sincronizacion.png"
             alt="Refrescar ingresos"
+            title='Refrescar ingresos'
             width={26}
             height={26}
           />
-        </button>
       </div>
       <article className="mt-3 p-3 border border-2 rounded bg-light shadow">
         <h4 className="fs-5 text-center fw-bold">Ingresos del día: 
