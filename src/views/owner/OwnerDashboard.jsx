@@ -75,7 +75,7 @@ const OwnerDashboard = () => {
       </section>
 
       <section className="mt-5 p-5 border rounded-3 shadow ms-xl-3 container-estacionamientos-indicadores">
-        <h3 className="text-center mb-4">Tus ingresos</h3>
+        <h3 className="text-center mb-4 text-white">Tus ingresos</h3>
       </section>
 
     </main>

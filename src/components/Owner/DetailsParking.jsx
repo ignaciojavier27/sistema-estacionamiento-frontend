@@ -54,18 +54,18 @@ const DetailsParking = ({ estacionamientoId }) => {
   };
 
   return (
-    <section className="mt-5 ms-3 p-5 border rounded-3 shadow position-relative">
+    <section className="mt-3 ms-3 p-5 border rounded-3 shadow position-relative">
       <div className="d-flex justify-content-between">
         <h3 className="text-center">Datos del estacionamiento</h3>
-          <img
-            onClick={fetchSalidas}
-            className='icono-sincronizacion'
-            src="/images/icono-sincronizacion.png"
-            alt="Refrescar ingresos"
-            title='Refrescar ingresos'
-            width={26}
-            height={26}
-          />
+        <img
+          onClick={fetchSalidas}
+          className='icono-sincronizacion'
+          src="/images/icono-sincronizacion.png"
+          alt="Refrescar ingresos"
+          title='Refrescar ingresos'
+          width={26}
+          height={26}
+        />
       </div>
       <article className="mt-3 p-3 border border-2 rounded bg-light shadow">
         <h4 className="fs-5 text-center fw-bold">Ingresos del día: 
@@ -82,6 +82,7 @@ const DetailsParking = ({ estacionamientoId }) => {
           <span className="text-center fs-5 text-success"> ${ingresosAnuales}</span>
         </h4>
       </article>
+
     </section>
   );
 };

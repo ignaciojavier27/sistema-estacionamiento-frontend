@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import DetailsParking from '../../components/Owner/DetailsParking';
+import NotificationsParking from '../../components/Owner/NotificationsParking';
 
 const OwnerManageParkingScreen = () => {
   const { id } = useParams();
@@ -137,7 +138,10 @@ const OwnerManageParkingScreen = () => {
         )}
       </section>
 
-      <DetailsParking />
+      <section>
+        <NotificationsParking />
+        <DetailsParking />
+      </section>
 
       {modalVisible && (
         <div className="modal show d-block" tabIndex="-1">
