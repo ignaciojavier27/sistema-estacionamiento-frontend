@@ -91,6 +91,18 @@ background-clip: text;
   background-color: rgb(120, 0, 0);  
 }
 
+.icono-sincronizacion{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  transition: transform .4s ease;
+}
+
+.icono-sincronizacion:hover{
+  cursor: pointer;
+  transform: rotate(180deg);
+}
+
 @keyframes l24 {
   100% {
     background-position: left;
