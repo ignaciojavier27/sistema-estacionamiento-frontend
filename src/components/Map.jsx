@@ -4,7 +4,6 @@ import L from 'leaflet';
 import { obtenerCoordenadas } from '../helpers/obtenerCoordenadas';
 import { obtenerUbicacionUsuario } from '../helpers/obtenerUbicacionUsuario';
 import MarcadorEstacionamiento from './MarcadorEstacionamiento';
-import InputLocation from './MapComponents/InputLocation';
 
 const userIcon = new L.Icon({
   iconUrl: '/images/icono-auto.png',
@@ -77,9 +76,6 @@ const Map = () => {
             )}
           </MapContainer>
 
-          <section className='section-input-location'>
-            <InputLocation />
-          </section>
         </div>
       )}
     </section>

@@ -110,7 +110,8 @@ const Register = () => {
               onChange={handleChange}
               required
             >
-              <option value="cliente">Usuario Común</option>
+              <option value="">Seleccione un tipo de usuario</option>
+              <option value="cliente" >Usuario Común</option>
               <option value="propietario">Propietario</option>
             </select>
           </div>

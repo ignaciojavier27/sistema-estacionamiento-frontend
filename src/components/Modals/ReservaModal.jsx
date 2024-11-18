@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const ReservaModal = ({ show, onClose, estacionamiento }) => {
+const ReservaModal = ({ show, onClose, estacionamiento, usuario }) => {
     const [fechaReserva, setFechaReserva] = useState('');
     const [horaInicio, setHoraInicio] = useState('');
     const [patente, setPatente] = useState('');
@@ -12,6 +12,7 @@ const ReservaModal = ({ show, onClose, estacionamiento }) => {
             setHoraInicio(obtenerHoraActual());
         }
     }, [show]);
+
 
     const obtenerFechaMinima = () => {
         const today = new Date();
@@ -26,19 +27,39 @@ const ReservaModal = ({ show, onClose, estacionamiento }) => {
         return `${hours}:${minutes}`;
     };
 
-    const handleReserva = (e) => {
+    const handleReserva = async (e) => {
         e.preventDefault();
-
+      
         const reservaData = {
-            estacionamiento_id: estacionamiento.estacionamiento_id,
-            fecha_reserva: fechaReserva,
-            hora_inicio: horaInicio,
-            patente: patente,
+          usuario_id: usuario.usuario_id,
+          estacionamiento_id: estacionamiento.estacionamiento_id,
+          fecha_reserva: fechaReserva,
+          hora_inicio: horaInicio,
+          propietario_id: estacionamiento.propietario_id,
+          patente: patente, 
         };
-
-        console.log('Datos de la reserva:', reservaData);
+      
+        try {
+          const response = await fetch('https://sistema-estacionamiento-backend-production.up.railway.app/api/reservas', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(reservaData),
+          });
+      
+          const data = await response.json();
+          if (data.success) {
+            console.log('Reserva creada exitosamente:', data.data);
+          } else {
+            console.error('Error al crear la reserva:', data.message);
+          }
+        } catch (error) {
+          console.error('Error de red:', error);
+        }
+      
         onClose();
-    };
+      };
 
     if (!show) {
         return null;
@@ -101,6 +122,7 @@ ReservaModal.propTypes = {
     show: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     estacionamiento: PropTypes.object.isRequired,
+    usuario: PropTypes.object.isRequired
 };
 
 export default ReservaModal;

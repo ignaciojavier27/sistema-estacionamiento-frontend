@@ -14,14 +14,17 @@ const parkingIcon = new L.Icon({
 const MarcadorEstacionamiento = ({ estacionamiento }) => {
     const [showModal, setShowModal] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [usuario, setUsuario] = useState(null);
 
     // Efecto para comprobar si el usuario está logeado
     useEffect(() => {
         const usuario = JSON.parse(localStorage.getItem("usuario"));
         if (usuario) {
             setIsLoggedIn(true);
+            setUsuario(usuario);
         } else {
             setIsLoggedIn(false);
+            setUsuario(null);
         }
     }, []);
 
@@ -63,6 +66,7 @@ const MarcadorEstacionamiento = ({ estacionamiento }) => {
                     show={showModal} 
                     onClose={() => setShowModal(false)} 
                     estacionamiento={estacionamiento}
+                    usuario={usuario}
                 />
             )}
         </>
