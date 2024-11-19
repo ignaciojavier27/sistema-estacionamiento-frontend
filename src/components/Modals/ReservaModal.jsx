@@ -36,11 +36,13 @@ const ReservaModal = ({ show, onClose, estacionamiento, usuario }) => {
           fecha_reserva: fechaReserva,
           hora_inicio: horaInicio,
           propietario_id: estacionamiento.propietario_id,
-          patente: patente, 
+          patente: patente,
         };
+
+        console.log(reservaData)
       
         try {
-          const response = await fetch('https://sistema-estacionamiento-backend-production.up.railway.app/api/reservas', {
+          const response = await fetch('https://sistema-estacionamiento-backend-production.up.railway.app/api/reserva', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -48,16 +50,14 @@ const ReservaModal = ({ show, onClose, estacionamiento, usuario }) => {
             body: JSON.stringify(reservaData),
           });
       
-          const data = await response.json();
-          if (data.success) {
-            console.log('Reserva creada exitosamente:', data.data);
-          } else {
-            console.error('Error al crear la reserva:', data.message);
+          if (!response.ok) {
+            throw new Error('Error al crear la reserva');
           }
+          console.log('Reserva creada exitosamente');
         } catch (error) {
-          console.error('Error de red:', error);
+          console.error('Error al crear la reserva:', error);
         }
-      
+        
         onClose();
       };
 
