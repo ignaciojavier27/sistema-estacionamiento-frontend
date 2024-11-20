@@ -13,6 +13,14 @@ const OwnerManageParkingScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [loadingRegistro, setLoadingRegistro] = useState(false);
   const [esSalida, setEsSalida] = useState(false);
+  const [propietarioId, setPropietarioId] = useState(null);
+
+  useEffect(() => {
+    const usuarioLogueado = JSON.parse(localStorage.getItem('usuario'));
+    if (usuarioLogueado) {
+      setPropietarioId(usuarioLogueado.usuario_id);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchEspacios = async () => {
@@ -139,7 +147,7 @@ const OwnerManageParkingScreen = () => {
       </section>
 
       <section>
-        <NotificationsParking />
+        <NotificationsParking propietarioId={propietarioId}/>
         <DetailsParking />
       </section>
 
