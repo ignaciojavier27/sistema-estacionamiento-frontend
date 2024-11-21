@@ -18,8 +18,6 @@ const NotificationsParking = ({ propietarioId }) => {
         }
 
         const data = await response.json();
-        console.log(data)
-        console.log(propietarioId)
         setNotificaciones(data.notificaciones); // Ajusta según la estructura de tu backend
       } catch (err) {
         setError(err.message);
@@ -44,18 +42,24 @@ const NotificationsParking = ({ propietarioId }) => {
           notificaciones.map((notificacion) => (
             <li
               key={notificacion.notificacion_id}
-              className="list-group-item d-flex justify-content-between align-items-center"
+              className="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded-3 border-2"
             >
               <div>
                 <p className="mb-1">
                   <strong>Mensaje:</strong> {notificacion.mensaje}
                 </p>
                 <p className="mb-1">
-                  <strong>Fecha:</strong> {new Date(notificacion.fecha_envio).toLocaleString()}
+                  <strong>Fecha:</strong> {notificacion.reserva?.fecha_reserva} a las{" "}
+                  {notificacion.reserva?.hora_inicio}
+                </p>
+                <p className="mb-1">
+                  <strong>Patente:</strong> {notificacion.reserva?.patente}
                 </p>
                 <p className="mb-0">
                   <strong>Estado:</strong> {notificacion.estado}
                 </p>
+                <button className="btn btn-dark p-1 m-2">Aceptar</button>
+                <button className="btn btn-danger p-1">Rechazar</button>
               </div>
             </li>
           ))

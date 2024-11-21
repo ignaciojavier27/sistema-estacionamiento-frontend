@@ -44,7 +44,7 @@ const ClientNavbar = () => {
                             </button>
                             <ul className="dropdown-menu">
                                 <li>
-                                    <NavLink to='/client/history' className="dropdown-item">Historial</NavLink>
+                                    <NavLink to='/client/history' className="dropdown-item">Reservas</NavLink>
                                 </li>
                                 <li>
                                     <NavLink to='/logout' className="dropdown-item">Cerrar Sesión</NavLink>
