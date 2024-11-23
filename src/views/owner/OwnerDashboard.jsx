@@ -69,13 +69,9 @@ const OwnerDashboard = () => {
             No tienes estacionamientos registrados.
           </h3>
         )}
-        <button className="btn btn-dark btn-lg mt-3">
+        <button className="btn btn-dark btn mt-3">
           <NavLink to="/owners/parking" className={"nav-link"}>Añadir estacionamiento</NavLink>
         </button>
-      </section>
-
-      <section className="mt-5 p-5 border rounded-3 shadow ms-xl-3 container-estacionamientos-indicadores">
-        <h3 className="text-center mb-4 text-white">Tus ingresos</h3>
       </section>
 
     </main>

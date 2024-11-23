@@ -16,18 +16,53 @@ const NotificationsParking = ({ propietarioId }) => {
         if (!response.ok) {
           throw new Error("Error al obtener las notificaciones");
         }
-
+        
         const data = await response.json();
-        setNotificaciones(data.notificaciones); // Ajusta según la estructura de tu backend
+        setNotificaciones(data.notificaciones);
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-
+    
     fetchNotificaciones();
+    console.log(notificaciones);
   }, [propietarioId]);
+
+  // Actualizar estado local después de aceptar o rechazar
+  const actualizarNotificacion = (notificacionId) => {
+    setNotificaciones((prev) =>
+      prev.filter((notificacion) => notificacion.notificacion_id !== notificacionId)
+    );
+  };
+
+  // Manejo genérico de estado de reservas
+  const cambiarEstadoReserva = async (reservaId, estado, notificacionId) => {
+    try {
+      const response = await fetch(
+        `https://sistema-estacionamiento-backend-production.up.railway.app/api/reserva/${reservaId}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ estado }),
+        }
+      );
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Error al actualizar la reserva");
+      }
+
+      if (data.warning) {
+        console.warn("Advertencia:", data.warning);
+      }
+
+      actualizarNotificacion(notificacionId);
+    } catch (error) {
+      console.error("Error al actualizar la reserva:", error);
+    }
+  };
 
   if (loading) return <p>Cargando notificaciones...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -42,7 +77,7 @@ const NotificationsParking = ({ propietarioId }) => {
           notificaciones.map((notificacion) => (
             <li
               key={notificacion.notificacion_id}
-              className="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded-3 border-2"
+              className="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded-3 border-2 border-black"
             >
               <div>
                 <p className="mb-1">
@@ -55,11 +90,30 @@ const NotificationsParking = ({ propietarioId }) => {
                 <p className="mb-1">
                   <strong>Patente:</strong> {notificacion.reserva?.patente}
                 </p>
-                <p className="mb-0">
-                  <strong>Estado:</strong> {notificacion.estado}
-                </p>
-                <button className="btn btn-dark p-1 m-2">Aceptar</button>
-                <button className="btn btn-danger p-1">Rechazar</button>
+                <button
+                  className="btn btn-dark p-1 m-2 px-2"
+                  onClick={() =>
+                    cambiarEstadoReserva(
+                      notificacion.reserva_id,
+                      "aceptada",
+                      notificacion.notificacion_id
+                    )
+                  }
+                >
+                  Aceptar
+                </button>
+                <button
+                  className="btn btn-danger p-1 px-2"
+                  onClick={() =>
+                    cambiarEstadoReserva(
+                      notificacion.reserva_id,
+                      "rechazada",
+                      notificacion.notificacion_id
+                    )
+                  }
+                >
+                  Rechazar
+                </button>
               </div>
             </li>
           ))
