@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { MdClose } from "react-icons/md";
 
 const NotificationsParking = ({ propietarioId }) => {
   const [notificaciones, setNotificaciones] = useState([]);
@@ -16,18 +17,27 @@ const NotificationsParking = ({ propietarioId }) => {
         if (!response.ok) {
           throw new Error("Error al obtener las notificaciones");
         }
-        
+
         const data = await response.json();
-        setNotificaciones(data.notificaciones);
+
+        console.log(data);
+
+        // Ordenar las notificaciones de más recientes a más antiguas
+        const notificacionesOrdenadas = data.notificaciones.sort((a, b) => {
+          const fechaA = new Date(a.reserva?.fecha_reserva + " " + a.reserva?.hora_inicio);
+          const fechaB = new Date(b.reserva?.fecha_reserva + " " + b.reserva?.hora_inicio);
+          return fechaB - fechaA; // Orden descendente (más recientes primero)
+        });
+
+        setNotificaciones(notificacionesOrdenadas);
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchNotificaciones();
-    console.log(notificaciones);
   }, [propietarioId]);
 
   // Actualizar estado local después de aceptar o rechazar
@@ -77,7 +87,7 @@ const NotificationsParking = ({ propietarioId }) => {
           notificaciones.map((notificacion) => (
             <li
               key={notificacion.notificacion_id}
-              className="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded-3 border-2 border-black"
+              className="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded-3 border-2 border-black px-4"
             >
               <div>
                 <p className="mb-1">
@@ -115,6 +125,10 @@ const NotificationsParking = ({ propietarioId }) => {
                   Rechazar
                 </button>
               </div>
+              <MdClose
+                className="position-absolute top-0 end-0 p-2 cursor-pointer close-icon"
+                style={{ fontSize: "1.7rem", color: "red" }}
+              />
             </li>
           ))
         ) : (
