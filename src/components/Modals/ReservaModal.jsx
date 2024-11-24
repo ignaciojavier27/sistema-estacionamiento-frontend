@@ -6,13 +6,13 @@ const ReservaModal = ({ show, onClose, estacionamiento, usuario }) => {
     const [fechaReserva, setFechaReserva] = useState('');
     const [horaInicio, setHoraInicio] = useState('');
     const [patente, setPatente] = useState('');
+    const [error, setError] = useState('');
 
     useEffect(() => {
         if (show) {
             setHoraInicio(obtenerHoraActual());
         }
     }, [show]);
-
 
     const obtenerFechaMinima = () => {
         const today = new Date();
@@ -27,39 +27,49 @@ const ReservaModal = ({ show, onClose, estacionamiento, usuario }) => {
         return `${hours}:${minutes}`;
     };
 
+    // Expresión regular para validar el formato de la patente: XXXX99
+    const validarPatente = (patente) => {
+        const regex = /^[A-Z]{4}[0-9]{2}$/;
+        return regex.test(patente);
+    };
+
     const handleReserva = async (e) => {
         e.preventDefault();
-      
+
+        if (!validarPatente(patente)) {
+            setError('La patente debe tener el formato XXXX99 (letras seguidas de números)');
+            return;
+        }
+
         const reservaData = {
-          usuario_id: usuario.usuario_id,
-          estacionamiento_id: estacionamiento.estacionamiento_id,
-          fecha_reserva: fechaReserva,
-          hora_inicio: horaInicio,
-          propietario_id: estacionamiento.propietario_id,
-          patente: patente,
+            usuario_id: usuario.usuario_id,
+            estacionamiento_id: estacionamiento.estacionamiento_id,
+            fecha_reserva: fechaReserva,
+            hora_inicio: horaInicio,
+            propietario_id: estacionamiento.propietario_id,
+            patente: patente,
         };
 
-        console.log(reservaData)
-      
+        console.log(reservaData);
+
         try {
-          const response = await fetch('https://sistema-estacionamiento-backend-production.up.railway.app/api/reserva', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(reservaData),
-          });
-      
-          if (!response.ok) {
-            throw new Error('Error al crear la reserva');
-          }
-          console.log('Reserva creada exitosamente');
+            const response = await fetch('https://sistema-estacionamiento-backend-production.up.railway.app/api/reserva', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(reservaData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al crear la reserva');
+            }
+            console.log('Reserva creada exitosamente');
+            onClose();
         } catch (error) {
-          console.error('Error al crear la reserva:', error);
+            console.error('Error al crear la reserva:', error);
         }
-        
-        onClose();
-      };
+    };
 
     if (!show) {
         return null;
@@ -105,9 +115,13 @@ const ReservaModal = ({ show, onClose, estacionamiento, usuario }) => {
                                     className="form-control"
                                     id="patente"
                                     value={patente}
-                                    onChange={(e) => setPatente(e.target.value)}
+                                    onChange={(e) => {
+                                        setPatente(e.target.value);
+                                        setError(''); // Limpiar error al escribir
+                                    }}
                                     required
                                 />
+                                {error && <div className="text-danger mt-2">{error}</div>}
                             </div>
                             <button type="submit" className="btn btn-dark">Confirmar Reserva</button>
                         </form>

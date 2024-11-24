@@ -10,8 +10,10 @@ const FormularioEstacionamiento = () => {
   const [pais, setPais] = useState("");
   const [capacidadTotal, setCapacidadTotal] = useState("");
   const [precioPorMinuto, setPrecioPorMinuto] = useState();
-  const [horarioDisponible, setHorarioDisponible] = useState("");
+  const [horaInicio, setHoraInicio] = useState(""); // Hora de inicio del rango
+  const [horaFin, setHoraFin] = useState(""); // Hora de fin del rango
   const [propietarioId, setPropietarioId] = useState(null);
+  const [errorHorario, setErrorHorario] = useState(""); // Error de validación
 
   const navigate = useNavigate();
 
@@ -25,15 +27,23 @@ const FormularioEstacionamiento = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validación de las horas (hora de inicio debe ser antes de la hora de fin)
+    if (horaInicio >= horaFin) {
+      setErrorHorario("La hora de inicio debe ser anterior a la hora de fin.");
+      return;
+    }
+
+    setErrorHorario(""); // Limpiar el error si la validación es exitosa
+
     const direccion = `${nombreCalle} ${numero}, ${ciudad}, ${region}, ${pais}`;
 
     const nuevoEstacionamiento = {
       nombre,
       direccion,
       precio_por_minuto: parseInt(precioPorMinuto),
-      horario_disponible: horarioDisponible,
+      horario_disponible: `${horaInicio} - ${horaFin}`, // Formato de horario
       propietario_id: propietarioId,
-      capacidad: capacidadTotal
+      capacidad: capacidadTotal,
     };
 
     try {
@@ -178,15 +188,25 @@ const FormularioEstacionamiento = () => {
               >
                 Horario Disponible:
               </label>
-              <input
-                type="text"
-                name="horario"
-                className="form-control"
-                id="estacionamiento-horario-input"
-                value={horarioDisponible}
-                onChange={(e) => setHorarioDisponible(e.target.value)}
-                required
-              />
+              <div className="d-flex gap-3">
+                <input
+                  type="time"
+                  className="form-control"
+                  value={horaInicio}
+                  onChange={(e) => setHoraInicio(e.target.value)}
+                  required
+                />
+                <input
+                  type="time"
+                  className="form-control"
+                  value={horaFin}
+                  onChange={(e) => setHoraFin(e.target.value)}
+                  required
+                />
+              </div>
+              {errorHorario && (
+                <div className="text-danger mt-2">{errorHorario}</div>
+              )}
             </div>
             <button className="btn btn-dark" type="submit">
               Agregar Estacionamiento

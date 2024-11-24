@@ -5,6 +5,7 @@ const NotificationsParking = ({ propietarioId }) => {
   const [notificaciones, setNotificaciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [processing, setProcessing] = useState(false); // Estado para evitar solicitudes duplicadas
 
   // Obtener notificaciones del propietario
   useEffect(() => {
@@ -40,16 +41,13 @@ const NotificationsParking = ({ propietarioId }) => {
     fetchNotificaciones();
   }, [propietarioId]);
 
-  // Actualizar estado local después de aceptar o rechazar
-  const actualizarNotificacion = (notificacionId) => {
-    setNotificaciones((prev) =>
-      prev.filter((notificacion) => notificacion.notificacion_id !== notificacionId)
-    );
-  };
+  // Cambiar estado de la reserva y eliminar la notificación
+  const manejarNotificacion = async (reservaId, estado, notificacionId) => {
+    if (processing) return; // Evitar solicitudes duplicadas
+    setProcessing(true);
 
-  // Manejo genérico de estado de reservas
-  const cambiarEstadoReserva = async (reservaId, estado, notificacionId) => {
     try {
+      // Cambiar el estado de la reserva
       const response = await fetch(
         `https://sistema-estacionamiento-backend-production.up.railway.app/api/reserva/${reservaId}`,
         {
@@ -59,18 +57,67 @@ const NotificationsParking = ({ propietarioId }) => {
         }
       );
 
-      const data = await response.json();
       if (!response.ok) {
+        const data = await response.json();
         throw new Error(data.message || "Error al actualizar la reserva");
       }
 
-      if (data.warning) {
-        console.warn("Advertencia:", data.warning);
+      console.log(`Reserva ${estado}: actualizada con éxito`);
+
+      // Eliminar la notificación del backend
+      const deleteResponse = await fetch(
+        `https://sistema-estacionamiento-backend-production.up.railway.app/api/notificacion/propietarios/${notificacionId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!deleteResponse.ok) {
+        throw new Error("Error al eliminar la notificación");
       }
 
-      actualizarNotificacion(notificacionId);
+      console.log(`Notificación ${notificacionId} eliminada con éxito`);
+
+      // Actualizar la lista de notificaciones tras eliminarla del servidor
+      setNotificaciones((prev) =>
+        prev.filter((notificacion) => notificacion.notificacion_id !== notificacionId)
+      );
     } catch (error) {
-      console.error("Error al actualizar la reserva:", error);
+      console.error("Error al procesar la notificación:", error);
+      alert("Ocurrió un error. Por favor, intenta nuevamente.");
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  // Función para eliminar una notificación directamente (MdClose)
+  const eliminarNotificacion = async (notificacionId) => {
+    if (processing) return; // Evitar solicitudes duplicadas
+    setProcessing(true);
+
+    try {
+      const response = await fetch(
+        `https://sistema-estacionamiento-backend-production.up.railway.app/api/notificacion/propietarios/${notificacionId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error al eliminar la notificación");
+      }
+
+      console.log(`Notificación ${notificacionId} eliminada con éxito`);
+
+      // Actualizar la lista de notificaciones tras eliminarla del servidor
+      setNotificaciones((prev) =>
+        prev.filter((notificacion) => notificacion.notificacion_id !== notificacionId)
+      );
+    } catch (error) {
+      console.error("Error al eliminar la notificación:", error);
+      alert("No se pudo eliminar la notificación. Intenta nuevamente.");
+    } finally {
+      setProcessing(false);
     }
   };
 
@@ -103,31 +150,34 @@ const NotificationsParking = ({ propietarioId }) => {
                 <button
                   className="btn btn-dark p-1 m-2 px-2"
                   onClick={() =>
-                    cambiarEstadoReserva(
+                    manejarNotificacion(
                       notificacion.reserva_id,
                       "aceptada",
                       notificacion.notificacion_id
                     )
                   }
+                  disabled={processing} // Deshabilita el botón si está en proceso
                 >
                   Aceptar
                 </button>
                 <button
                   className="btn btn-danger p-1 px-2"
                   onClick={() =>
-                    cambiarEstadoReserva(
+                    manejarNotificacion(
                       notificacion.reserva_id,
                       "rechazada",
                       notificacion.notificacion_id
                     )
                   }
+                  disabled={processing} // Deshabilita el botón si está en proceso
                 >
                   Rechazar
                 </button>
               </div>
               <MdClose
+                onClick={() => eliminarNotificacion(notificacion.notificacion_id)}
                 className="position-absolute top-0 end-0 p-2 cursor-pointer close-icon"
-                style={{ fontSize: "1.7rem", color: "red" }}
+                style={{ fontSize: "1.7rem", color: "red", cursor: "pointer" }}
               />
             </li>
           ))

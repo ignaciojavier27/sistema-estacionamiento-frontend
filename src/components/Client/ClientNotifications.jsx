@@ -42,11 +42,26 @@ const ClientNotifications = ({ usuarioId }) => {
     fetchNotificaciones();
   }, [usuarioId]);
 
-  // Función para eliminar una notificación (puedes ajustarla según tu lógica)
-  const eliminarNotificacion = (notificacionId) => {
-    setNotificaciones((prev) =>
-      prev.filter((notificacion) => notificacion.notificacion_id !== notificacionId)
-    );
+  // Función para eliminar una notificación en el backend y luego actualizar el estado
+  const eliminarNotificacion = async (notificacionId) => {
+    try {
+      const response = await fetch(
+        `https://sistema-estacionamiento-backend-production.up.railway.app/api/notificacion/usuarios/${notificacionId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error al eliminar la notificación");
+      }
+
+      setNotificaciones((prev) =>
+        prev.filter((notificacion) => notificacion.notificacion_id !== notificacionId)
+      );
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   if (loading) return <p>Cargando notificaciones...</p>;
@@ -77,7 +92,6 @@ const ClientNotifications = ({ usuarioId }) => {
                 </p>
               </div>
 
-              {/* Icono de cierre */}
               <MdClose
                 onClick={() => eliminarNotificacion(notificacion.notificacion_id)}
                 className="position-absolute top-0 end-0 p-2 cursor-pointer close-icon"
