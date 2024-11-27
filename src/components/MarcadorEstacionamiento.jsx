@@ -16,6 +16,8 @@ const MarcadorEstacionamiento = ({ estacionamiento }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [usuario, setUsuario] = useState(null);
 
+
+
     // Efecto para comprobar si el usuario está logeado
     useEffect(() => {
         const usuario = JSON.parse(localStorage.getItem("usuario"));
@@ -43,6 +45,10 @@ const MarcadorEstacionamiento = ({ estacionamiento }) => {
                         <p>
                             <span className="fw-bold fs-6">Dirección:</span>
                             <span className="fs-6"> {estacionamiento.direccion}</span>
+                        </p>
+                        <p>
+                            <span className="fw-bold fs-6">Horario:</span>
+                            <span className="fs-6"> {estacionamiento.horario_disponible}</span>
                         </p>
                         <p>
                             <span className="fw-bold fs-6">Precio Minuto:</span> 
