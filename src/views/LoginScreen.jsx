@@ -6,13 +6,13 @@ import { NavLink } from 'react-router-dom'
 const LoginScreen = ({ setUserType }) => {
     return (
         <main>
-            <section className="container-desarrollo container-fluid bg-white py-5 d-flex flex-row justify-content-around align-items-center">
+            <section className="container-desarrollo container-fluid bg-white py-5 d-flex flex-column flex-lg-row justify-content-around align-items-center">
                 <article className='info-login'>
                     <h2>Inicio Sesión</h2>
                     <p className='mt-2'>¿No tienes una cuenta? <NavLink to="/signup">Registrate</NavLink></p>
                 </article>
 
-                <article className='w-50 p-5 bg-light rounded-5 border'>
+                <article className=' container-login p-5 bg-light rounded-5 border'>
                     <Login setUserType={setUserType}/>
                 </article>
 

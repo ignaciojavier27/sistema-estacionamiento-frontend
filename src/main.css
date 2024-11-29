@@ -143,3 +143,13 @@ background-clip: text;
   right: 10px;
   cursor: pointer;
 }
+
+.container-login{
+  width: 50%;
+}
+
+@media (width < 992px) {
+  .container-login{
+    width: 90%;
+  }
+}
